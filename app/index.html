@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[Projektnamn] – Göteborgs Stad</title>
+
+    <!-- Open Sans från jsdelivr (samma CDN som d3) -->
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5/400.css" />
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5/700.css" />
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5/800.css" />
+
+    <link rel="stylesheet" href="src/styles.css" />
+    <script type="module" src="src/main.js"></script>
+  </head>
+  <body>
+    <header class="sidhuvud">
+      <span class="avsandare">Göteborgs Stad</span>
+    </header>
+
+    <main class="innehall">
+      <h1>[Projektnamn]</h1>
+      <p class="ingress">
+        Exempelapp från mallen. Ersätt rubrik, text och diagram med
+        projektets innehåll.
+      </p>
+
+      <section id="nyckeltal" class="nyckeltal">
+        <p>Laddar data …</p>
+      </section>
+
+      <section id="linjediagram"><p>Laddar diagram …</p></section>
+
+      <section id="stapeldiagram"><p>Laddar diagram …</p></section>
+
+      <section>
+        <fieldset id="nivaval" class="nivaval">
+          <legend>Geografisk nivå</legend>
+          <label><input type="radio" name="niva" value="stadsomrade" />
+            Stadsområden</label>
+          <label><input type="radio" name="niva" value="mellanomrade" />
+            Mellanområden</label>
+          <label><input type="radio" name="niva" value="primaromrade"
+            checked /> Primärområden</label>
+        </fieldset>
+        <div id="karta"><p>Laddar karta …</p></div>
+      </section>
+    </main>
+  </body>
+</html>

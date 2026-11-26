@@ -1,0 +1,42 @@
+# Renderar Quarto-rapporten i rapport/ och publicerar den till GitHub
+# Pages. Körs bara när den startas manuellt (Actions > Publicera
+# rapport > Run workflow), aldrig automatiskt vid push.
+# R behövs inte här: JSON i rapport/data/ är redan exporterad och
+# validerad lokalt (R/99_exportera_json.R).
+# Används inte rapport/? Ta bort den här filen tillsammans med mappen.
+#
+# Kräver: publikt repo och Settings > Pages > Source: GitHub Actions
+
+name: Publicera rapport
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publicera:
+    # Körs inte i själva mallrepot, bara i projekt skapade från det
+    if: ${{ !github.event.repository.is_template }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publicering.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - name: Rendera rapporten
+        run: quarto render rapport
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: rapport/_site
+      - id: publicering
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,128 @@
+/* Grundstil enligt Göteborgs Stads grafiska profil.
+   Färger och typsnitt motsvarar src/theme.js. */
+
+:root {
+  --gbg-bla: #0077bc;
+  --svart: #1f1f1f;
+  --vit: #ffffff;
+  --gra: #d1d9dc;
+  --typsnitt: "Open Sans", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--typsnitt);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--svart);
+  background: var(--vit);
+}
+
+.sidhuvud {
+  background: var(--gbg-bla);
+  color: var(--vit);
+  padding: 12px 24px;
+  font-weight: 700;
+}
+
+.innehall {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+/* Hierarki med storlek och vikt, aldrig med färg */
+h1 {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 32px 0 8px;
+}
+
+.ingress {
+  font-size: 18px;
+  max-width: 65ch;
+}
+
+.stort-tal {
+  font-size: 48px;
+  font-weight: 800;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.kallrad {
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+/* Diagram */
+.diagram {
+  margin: 40px 0 0;
+}
+
+.diagram h3 {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.underrubrik {
+  margin: 0 0 12px;
+}
+
+.diagram svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  font-family: var(--typsnitt);
+}
+
+/* d3-axlar sätter eget typsnitt; skriv över så att allt är Open Sans */
+.diagram svg text {
+  fill: var(--svart);
+  font-family: var(--typsnitt);
+  font-size: 13px;
+}
+
+.diagram .rutnat line {
+  stroke: var(--gra);
+}
+
+/* Verktygstips: svart text på vit botten */
+.tips {
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  background: var(--vit);
+  color: var(--svart);
+  border: 1px solid var(--gra);
+  padding: 6px 10px;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 15%);
+}
+
+/* Val av geografisk nivå */
+.nivaval {
+  border: none;
+  padding: 0;
+  margin: 40px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.nivaval legend {
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding: 0;
+}

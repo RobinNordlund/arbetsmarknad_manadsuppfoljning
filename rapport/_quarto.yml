@@ -1,0 +1,24 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - data/**
+
+website:
+  title: "[Projektnamn]"
+  page-footer:
+    left: "Göteborgs Stad, Stadsledningskontoret"
+
+lang: sv
+
+format:
+  html:
+    theme: [cosmo, gbg.scss]
+    toc: true
+    toc-title: Innehåll
+    # Open Sans från jsdelivr, samma som i webbappen
+    include-in-header:
+      text: |
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5/400.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5/700.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5/800.css">

@@ -1,0 +1,28 @@
+/*-- scss:defaults --*/
+// Göteborgs Stads grafiska profil, samma värden som theme.js
+
+$primary: #0077bc;            // Göteborgsblå: länkar och profilelement
+$body-color: #1f1f1f;         // text alltid svart
+$body-bg: #ffffff;
+$font-family-sans-serif: "Open Sans", Arial, sans-serif;
+$headings-font-weight: 800;   // Open Sans Extrabold
+$navbar-bg: #0077bc;
+$navbar-fg: #ffffff;
+
+/*-- scss:rules --*/
+
+h1, h2, h3 {
+  color: $body-color;
+}
+
+.kallrad {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+// d3-axlar sätter eget typsnitt; skriv över så att allt är Open Sans
+svg text {
+  font-family: $font-family-sans-serif;
+  font-size: 13px;
+  fill: $body-color;
+}

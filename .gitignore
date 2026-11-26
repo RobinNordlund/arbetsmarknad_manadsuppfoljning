@@ -1,0 +1,42 @@
+# --- Data: committas aldrig (se CLAUDE.md) ---
+# Mappstrukturen behålls via .gitkeep
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Mellanresultat från analysen
+output/*
+!output/.gitkeep
+
+# --- R ---
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+renv/library/
+renv/staging/
+
+# --- Node (används inte av mallen, men om ett projekt lägger till det) ---
+node_modules/
+npm-debug.log*
+
+# --- Quarto ---
+rapport/_site/
+rapport/.quarto/
+rapport/*_files/
+/.quarto/
+
+# --- Hemligheter och lokala inställningar ---
+.env
+.env.*
+.Renviron
+.claude/settings.local.json
+
+# --- Operativsystem och editorer ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
