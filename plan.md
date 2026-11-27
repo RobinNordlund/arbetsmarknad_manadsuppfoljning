@@ -42,7 +42,7 @@ automatiskt varje månad.
       Kräver att R exporterar alla månader för branscherna (i dag har
       branscher.json bara senaste månaden)
 - [x] 8. Granska siffror och text
-- [ ] 9. Publicera manuellt och godkänn appen
+- [x] 9. Publicera manuellt och godkänn appen
 - [ ] 10. Sätt upp den schemalagda körningen (vardagar, kontroll av ny
       månad, skydd mot att GitHub stänger av schemat efter 60 dagar
       utan aktivitet) och aktivera den
@@ -238,10 +238,33 @@ att y-axeln inte börjar på noll; Visa från noll går tillbaka. Gäller
 Utveckling över tid och linjediagrammet i Branscher
 (zoomknapp i components/charts/gemensamt.js). Inte committat.
 
-Nästa: steg 9, publicera manuellt och godkänn appen. Robin ställer in
-GitHub Pages (Settings > Pages > Source: GitHub Actions) och startar
-Actions > Publicera app > Run workflow. Inget görs utan att Robin ber
-om det.
+PR #2 (nollbaslinje och zoom) är sammanslagen med main.
+
+Steg 9 påbörjat (2026-11-27): Robin har ställt in GitHub Pages och
+publicerat manuellt (Publicera app, körning 45997284322, lyckad).
+Appen ligger på
+https://robinnordlund.github.io/arbetsmarknad_manadsuppfoljning/ och
+är kontrollerad: alla fem flikar laddar, senaste månad är augusti
+2026, zoomknappen finns och konsolen visar inga fel. Robin godkände
+appen 2026-11-27. Steg 9 klart.
+
+Steg 10 påbörjat (2026-11-27): .github/workflows/manadskorning.yml
+och R/02_ny_manad.R. Varje vardag 09:00 UTC (och manuellt):
+1. aktiverar workflowet via GitHubs API (skydd mot att schemat stängs
+   av efter 60 dagar; att anropet nollställer gränsen är inte
+   verifierat, så kontrollera under Actions efter första månaden)
+2. 02_ny_manad.R jämför senaste månaden i alla tre tabellerna med
+   meta.json (testat lokalt: 2026M08 i både SCB och appen, ingen ny
+   månad)
+3. vid ny månad: 01, 10 och 99 (validerar först), commit av bara
+   app/data/*.json till main (stoppar om något annat ändrats) och
+   publicering på GitHub Pages
+
+Nästa: committa på branchen manadskorning, PR och sammanslagning.
+Robin kontrollerar sedan Settings > Actions > General > Workflow
+permissions (läs och skriv) och att main tar emot push från Actions,
+och provkör Actions > Månadskörning > Run workflow. Steg 10 bockas av
+när en provkörning har gått igenom.
 
 ## Öppna frågor
 Inga just nu.

@@ -64,13 +64,21 @@ klasserna i designsystemet.
 
 ## Publicera
 
-Appen publiceras på GitHub Pages med workflowet
-`.github/workflows/publicera-app.yml`. Under utvecklingen startas det
-bara manuellt: **Actions > Publicera app > Run workflow**. När appen
-är godkänd ska en schemalagd körning varje vardag hämta, bearbeta,
-validera, exportera och publicera när SCB har en ny månad. Den
-körningen ändrar bara data, aldrig appens kod, och publicerar inget om
-valideringen stoppar.
+Appen ligger på
+https://robinnordlund.github.io/arbetsmarknad_manadsuppfoljning/.
+
+**Månadskörning** (`.github/workflows/manadskorning.yml`): varje
+vardag kl. 09:00 UTC kontrollerar `R/02_ny_manad.R` om SCB har
+publicerat en ny månad. Finns en ny månad hämtas, bearbetas,
+valideras och exporteras data i GitHub Actions, och sedan committas
+bara `app/data/*.json` till `main` och appen publiceras. Stoppar
+valideringen publiceras inget och den tidigare versionen ligger kvar;
+GitHub mejlar då om den misslyckade körningen. Körningen kan också
+startas för hand: **Actions > Månadskörning > Run workflow**.
+
+**Ändringar i appen** publiceras manuellt med
+`.github/workflows/publicera-app.yml`: **Actions > Publicera app >
+Run workflow**.
 
 ## Struktur
 

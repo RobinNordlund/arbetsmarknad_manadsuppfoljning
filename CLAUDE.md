@@ -30,6 +30,7 @@ projektstart och håll dem aktuella.
 ```
 R/00_installningar.R   Regioner, tabelladresser, källrad, etiketter
 R/01_hamta_data.R      Hämtning (pxweb, filer i data/raw/)
+R/02_ny_manad.R        Finns en ny månad hos SCB? (månadskörningen)
 R/10_bearbeta.R        Bearbetning till data/processed/
 R/98_validera.R        Validering – stoppar vid fel
 R/99_exportera_json.R  Export till app/data/
@@ -152,7 +153,12 @@ Rscript R/99_exportera_json.R
 - Under utvecklingen startas publicering till GitHub Pages bara
   manuellt (Actions > Run workflow), aldrig vid push, och inte utan att
   Robin bett om det
-- När appen är godkänd aktiveras en schemalagd månadskörning: hämta,
-  bearbeta, validera, exportera och publicera. Den körningen ändrar
-  bara data, aldrig appens kod. Stoppar valideringen publiceras inget
-  och den tidigare versionen ligger kvar
+- Appen är godkänd (2026-11-27). Månadskörningen
+  (.github/workflows/manadskorning.yml) går varje vardag 09:00 UTC:
+  R/02_ny_manad.R kontrollerar om alla tre tabellerna har en ny månad,
+  och i så fall körs 01, 10 och 99 (som validerar först), bara
+  app/data/*.json committas till main och appen publiceras. Den
+  körningen ändrar bara data, aldrig appens kod. Stoppar valideringen
+  publiceras inget och den tidigare versionen ligger kvar
+- Ändringar i appens kod publiceras manuellt med Publicera app, och
+  inte utan att Robin bett om det
