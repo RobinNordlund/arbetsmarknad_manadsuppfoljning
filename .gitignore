@@ -33,6 +33,8 @@ rapport/*_files/
 .env.*
 .Renviron
 .claude/settings.local.json
+# Lokal förhandsvisning med sökväg till R på den egna datorn
+.claude/launch.json
 
 # --- Operativsystem och editorer ---
 .DS_Store

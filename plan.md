@@ -43,7 +43,7 @@ automatiskt varje månad.
       branscher.json bara senaste månaden)
 - [x] 8. Granska siffror och text
 - [x] 9. Publicera manuellt och godkänn appen
-- [ ] 10. Sätt upp den schemalagda körningen (vardagar, kontroll av ny
+- [x] 10. Sätt upp den schemalagda körningen (vardagar, kontroll av ny
       månad, skydd mot att GitHub stänger av schemat efter 60 dagar
       utan aktivitet) och aktivera den
 
@@ -260,11 +260,21 @@ och R/02_ny_manad.R. Varje vardag 09:00 UTC (och manuellt):
    app/data/*.json till main (stoppar om något annat ändrats) och
    publicering på GitHub Pages
 
-Nästa: committa på branchen manadskorning, PR och sammanslagning.
-Robin kontrollerar sedan Settings > Actions > General > Workflow
-permissions (läs och skriv) och att main tar emot push från Actions,
-och provkör Actions > Månadskörning > Run workflow. Steg 10 bockas av
-när en provkörning har gått igenom.
+Steg 10 klart (2026-11-27): PR #3 är sammanslagen med main och
+schemat är aktivt. Provkörning 46000786342 (manuell) gick igenom på
+cirka tre minuter: aktiveringen via API:t lyckades, R och paketen
+installerades, och 02_ny_manad.R svarade "Ingen ny månad" (2026M08 i
+SCB och i appen), så inget committades eller publicerades. main har
+inget grenskydd, och workflowet begär själv skrivrätt.
+
+Inte testat än: hämtning, commit och publicering i Actions. Det sker
+första gången när SCB publicerar 2026M09 (planerat 2026-11-30 enligt
+scb.se/AM0210).
+
+Nästa: kontrollera körningen efter SCB:s nästa publicering (att
+app/data/*.json committas och appen visar september 2026), och efter
+cirka två månader att schemat fortfarande är aktivt under Actions.
+Denna plan.md-ändring är inte committad.
 
 ## Öppna frågor
 Inga just nu.
