@@ -9,6 +9,9 @@
 //   serier: [{ namn, klass: "s1", varden: [...] }],  // max 4 i mörkt tema
 //   format: formatProcent,             // värden i tips
 //   axelformat: (v) => "...",          // y-axelns etiketter
+//   zoom: false,                       // true = y-axeln anpassas efter
+//                                      // värdena i stället för att
+//                                      // börja på noll
 // })
 
 import {
@@ -45,7 +48,9 @@ function spridEtiketter(etiketter) {
 }
 
 export function linjediagram({ svg, figur }, alternativ) {
-  const { manader, manadsnamn, serier, format, axelformat } = alternativ;
+  const {
+    manader, manadsnamn, serier, format, axelformat, zoom = false,
+  } = alternativ;
   const datum = manader.map(manadTillDatum);
   const rot = select(svg);
   rot.selectAll("*").remove();
@@ -55,7 +60,8 @@ export function linjediagram({ svg, figur }, alternativ) {
     .domain([datum[0], datum.at(-1)])
     .range([MARGINAL.left, BREDD - MARGINAL.right]);
   const y = scaleLinear()
-    .domain([min(alla), max(alla)]).nice(5)
+    // Noll är standard; zoom visar bara värdenas spann
+    .domain([zoom ? min(alla) : Math.min(0, min(alla)), max(alla)]).nice(5)
     .range([HOJD - MARGINAL.bottom, MARGINAL.top]);
 
   // Rutnät, bara horisontellt, och y-axelns etiketter
@@ -65,6 +71,13 @@ export function linjediagram({ svg, figur }, alternativ) {
     .call(axisLeft(y).ticks(5).tickSize(-(BREDD - MARGINAL.left -
       MARGINAL.right)).tickFormat(axelformat).tickPadding(8))
     .call((g) => g.select(".domain").remove());
+
+  // Nollinje när axeln börjar på noll
+  if (y.domain()[0] <= 0) {
+    rot.append("line").attr("class", "nollinje")
+      .attr("x1", MARGINAL.left).attr("x2", BREDD - MARGINAL.right)
+      .attr("y1", y(0)).attr("y2", y(0));
+  }
 
   // x-axeln: ett streck per år, utan axellinje
   rot.append("g")

@@ -7,7 +7,7 @@
 
 import { linjediagram } from "../components/charts/linjediagram.js";
 import {
-  skapaDiagramkort, laddaNerCsv, laggTillNyckelrad,
+  skapaDiagramkort, laddaNerCsv, laggTillNyckelrad, zoomknapp, ZOOMTEXT,
 } from "../components/charts/gemensamt.js";
 import {
   formatTal, formatProcent, formatForandring, svenskLocale,
@@ -18,7 +18,9 @@ const MAX_REGIONER = 4;
 const ANTAL_REGIONER = ["1480", "0180", "1280"];
 
 // Valen lever kvar när det gemensamma urvalet ändras
-const tillstand = { matt: "arbetsloshet", regioner: [GOTEBORG] };
+const tillstand = {
+  matt: "arbetsloshet", regioner: [GOTEBORG], zoom: false,
+};
 
 // Bygger ett uppslag på region, kön, födelseregion, ålder och mått
 export function indexeraTidsserier(serier) {
@@ -192,11 +194,15 @@ export function ritaUtveckling(element, {
   const delar = skapaDiagramkort(diagramplats, {
     titel: arAndel ? `${matt.namn}, procent` : `${matt.namn}, antal personer`,
     urvalstext,
-    metatext: `${serier.map((s) => s.namn).join(", ")} · ${period}`,
+    metatext: `${serier.map((s) => s.namn).join(", ")} · ${period}` +
+      (tillstand.zoom ? ` · ${ZOOMTEXT}` : ""),
     hjalptext: "För muspekaren över diagrammet, eller markera det och " +
       "använd vänster- och högerpil, för att se värdena för en månad.",
     kalla: m.kalla,
-    knappar: [{
+    knappar: [zoomknapp(tillstand.zoom, (z) => {
+      tillstand.zoom = z;
+      rita();
+    }), {
       text: "Ladda ner",
       vidKlick: () => laddaNerCsv(`${matt.kod}_${urval.alder}.csv`,
         ["Månad", ...serier.map((s) => s.namn)],
@@ -231,6 +237,7 @@ export function ritaUtveckling(element, {
     manadsnamn,
     serier,
     format,
+    zoom: tillstand.zoom,
     axelformat: arAndel
       ? (v) => `${svenskLocale.format(",~f")(v)} %`
       : svenskLocale.format(",.0f"),

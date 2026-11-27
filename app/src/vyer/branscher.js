@@ -8,7 +8,7 @@ import { stapeldiagram } from "../components/charts/stapeldiagram.js";
 import { linjediagram } from "../components/charts/linjediagram.js";
 import { skapaKallrad } from "../components/kallrad.js";
 import {
-  skapaDiagramkort, laddaNerCsv, laggTillNyckelrad,
+  skapaDiagramkort, laddaNerCsv, laggTillNyckelrad, zoomknapp, ZOOMTEXT,
 } from "../components/charts/gemensamt.js";
 import { formatTal, formatForandring, svenskLocale } from "../format.js";
 
@@ -19,6 +19,7 @@ const SAKNAS = "US";
 // Valen lever kvar när det gemensamma urvalet ändras
 const tillstand = {
   belagenhet: "arbetsstalle", visa: "varde", tsBransch: "A-U+US",
+  tsZoom: false,
 };
 
 export function indexeraBranscher(rader) {
@@ -300,11 +301,15 @@ function ritaBranschutveckling(forfader, {
       belagenhet.namn.replace(/^\S+/, (ord) => ord.toLowerCase()),
     urvalstext: urvalsdelar.join(" · "),
     metatext: `Göteborg · ${kortManad(manadsnamn[0])}–` +
-      `${kortManad(manadsnamn.at(-1))}`,
+      `${kortManad(manadsnamn.at(-1))}` +
+      (tillstand.tsZoom ? ` · ${ZOOMTEXT}` : ""),
     hjalptext: "För muspekaren över diagrammet, eller markera det och " +
       "använd vänster- och högerpil, för att se värdena för en månad.",
     kalla: m.kalla,
-    knappar: [{
+    knappar: [zoomknapp(tillstand.tsZoom, (z) => {
+      tillstand.tsZoom = z;
+      rita();
+    }), {
       text: "Ladda ner",
       vidKlick: () => laddaNerCsv(
         `bransch_${bransch.kod}_${belagenhet.kod}_tidsserie.csv`,
@@ -333,6 +338,7 @@ function ritaBranschutveckling(forfader, {
     serier,
     format: (v) => formatTal(v),
     axelformat: svenskLocale.format(",.0f"),
+    zoom: tillstand.tsZoom,
   });
 
   const tabell = el("table", "ds-tabell");
