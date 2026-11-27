@@ -87,6 +87,18 @@ export function laggTillNyckelrad({ figur, svg }, serier, rubrik) {
   figur.insertBefore(rad, svg);
 }
 
+// Knapp för linjediagram: y-axeln börjar på noll som standard och kan
+// zoomas in till värdenas spann. vidByte(nyZoom) ritar om diagrammet.
+export function zoomknapp(zoom, vidByte) {
+  return {
+    text: zoom ? "Visa från noll" : "Zooma in",
+    vidKlick: () => vidByte(!zoom),
+  };
+}
+
+// Text till metaraden när axeln inte börjar på noll
+export const ZOOMTEXT = "y-axeln börjar inte på noll";
+
 // Verktygstips inuti diagramkortet (div.ds-tips)
 export function skapaTips(figur) {
   const tips = el("div", "ds-tips");

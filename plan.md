@@ -72,6 +72,8 @@ automatiskt varje månad.
 - Utseendet följer Robins designsystem, mörkt tema som förval
   (2026-11-27)
 - Navigering mellan vyerna med flikar överst (2026-11-27)
+- Linjediagrammen börjar på noll som standard och kan zoomas in
+  (2026-11-27)
 
 ## Nästa steg
 Steg 1 klart (2026-11-27): geometrierna i geo/ och app/data/geo/,
@@ -226,9 +228,20 @@ Steg 8 klart (2026-11-27):
   600 px. Ingen del sticker längre ut på någon flik. Datorvyn är
   oförändrad.
 
-Nästa: steg 9, publicera manuellt och godkänn appen. Först behöver
-ändringarna committas (på en egen branch) och pushas, och GitHub
-Pages ställas in. Inget görs utan att Robin ber om det.
+Steg 1–8 är committade och sammanslagna med main (PR #1, 2026-11-27).
+Repot är publikt.
+
+Nollbaslinje i linjediagrammen (2026-11-27, Robins begäran): y-axeln
+börjar på noll som standard, med en nollinje. Knappen Zooma in i
+diagramkortet anpassar axeln efter värdena, och metaraden säger då
+att y-axeln inte börjar på noll; Visa från noll går tillbaka. Gäller
+Utveckling över tid och linjediagrammet i Branscher
+(zoomknapp i components/charts/gemensamt.js). Inte committat.
+
+Nästa: steg 9, publicera manuellt och godkänn appen. Robin ställer in
+GitHub Pages (Settings > Pages > Source: GitHub Actions) och startar
+Actions > Publicera app > Run workflow. Inget görs utan att Robin ber
+om det.
 
 ## Öppna frågor
 Inga just nu.
