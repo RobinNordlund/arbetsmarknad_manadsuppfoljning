@@ -1,53 +1,113 @@
 <!doctype html>
-<html lang="sv">
+<html lang="sv" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>[Projektnamn] – Göteborgs Stad</title>
+    <title>Arbetsmarknad – månadsuppföljning – Göteborgs Stad</title>
+
+    <!-- Tema före css så att sidan inte blinkar. Mörkt är förval;
+         ett eget val sparas i localStorage. -->
+    <script>
+      try {
+        const valt = localStorage.getItem("tema");
+        document.documentElement.dataset.theme = valt ?? "dark";
+      } catch (e) {
+        document.documentElement.dataset.theme = "dark";
+      }
+    </script>
 
     <!-- Open Sans från jsdelivr (samma CDN som d3) -->
     <link rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5/400.css" />
     <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5/600.css" />
+    <link rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5/700.css" />
     <link rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5/800.css" />
 
+    <!-- Robins designsystem, sedan projektets egna stilar -->
+    <link rel="stylesheet" href="src/tokens.css" />
+    <link rel="stylesheet" href="src/komponenter.css" />
     <link rel="stylesheet" href="src/styles.css" />
     <script type="module" src="src/main.js"></script>
   </head>
   <body>
-    <header class="sidhuvud">
-      <span class="avsandare">Göteborgs Stad</span>
-    </header>
+    <main class="ds-sida">
+      <header class="ds-sidhuvud">
+        <div class="sidhuvud-rad">
+          <h1>Arbetsmarknad – månadsuppföljning</h1>
+          <div class="ds-segment" role="group" aria-label="Tema"
+            id="val-tema">
+            <button type="button" data-varde="light">Ljust</button>
+            <button type="button" data-varde="dark">Mörkt</button>
+          </div>
+        </div>
+        <p class="ds-ingress">
+          Arbetsmarknaden i Göteborg jämfört med Stockholm, Malmö, SKR:s
+          större städer och riket.
+        </p>
+      </header>
 
-    <main class="innehall">
-      <h1>[Projektnamn]</h1>
-      <p class="ingress">
-        Exempelapp från mallen. Ersätt rubrik, text och diagram med
-        projektets innehåll.
-      </p>
+      <!-- Flikar: en per vy. Adressen (#utveckling osv.) visar vald flik. -->
+      <nav class="flikar" role="tablist" aria-label="Delar av uppföljningen">
+        <button type="button" role="tab" id="flik-oversikt"
+          aria-controls="panel-oversikt">Översikt</button>
+        <button type="button" role="tab" id="flik-utveckling"
+          aria-controls="panel-utveckling">Utveckling över tid</button>
+        <button type="button" role="tab" id="flik-jamforelse"
+          aria-controls="panel-jamforelse">Jämförelse mellan kommuner</button>
+        <button type="button" role="tab" id="flik-branscher"
+          aria-controls="panel-branscher">Branscher</button>
+        <button type="button" role="tab" id="flik-om"
+          aria-controls="panel-om">Om statistiken</button>
+      </nav>
 
-      <section id="nyckeltal" class="nyckeltal">
-        <p>Laddar data …</p>
+      <div class="ds-notis ds-notis--klar" role="status" id="senaste"></div>
+
+      <section class="ds-kort urvalskort" aria-label="Urval" id="urval">
+        <form class="ds-urval">
+          <div class="ds-falt" id="falt-alder">
+            <span id="etikett-alder">Ålder</span>
+            <div class="ds-segment" role="group"
+              aria-labelledby="etikett-alder" id="val-alder"></div>
+          </div>
+          <div class="ds-falt">
+            <span id="etikett-kon">Kön</span>
+            <div class="ds-segment" role="group"
+              aria-labelledby="etikett-kon" id="val-kon"></div>
+          </div>
+          <div class="ds-falt">
+            <span id="etikett-fodelseregion">Födelseregion</span>
+            <div class="ds-segment" role="group"
+              aria-labelledby="etikett-fodelseregion"
+              id="val-fodelseregion"></div>
+          </div>
+        </form>
       </section>
 
-      <section id="linjediagram"><p>Laddar diagram …</p></section>
-
-      <section id="stapeldiagram"><p>Laddar diagram …</p></section>
-
-      <section>
-        <fieldset id="nivaval" class="nivaval">
-          <legend>Geografisk nivå</legend>
-          <label><input type="radio" name="niva" value="stadsomrade" />
-            Stadsområden</label>
-          <label><input type="radio" name="niva" value="mellanomrade" />
-            Mellanområden</label>
-          <label><input type="radio" name="niva" value="primaromrade"
-            checked /> Primärområden</label>
-        </fieldset>
-        <div id="karta"><p>Laddar karta …</p></div>
-      </section>
+      <div role="tabpanel" id="panel-oversikt"
+        aria-labelledby="flik-oversikt">
+        <div id="vy-oversikt" aria-live="polite"></div>
+      </div>
+      <div role="tabpanel" id="panel-utveckling"
+        aria-labelledby="flik-utveckling" hidden>
+        <div id="vy-utveckling"></div>
+      </div>
+      <div role="tabpanel" id="panel-jamforelse"
+        aria-labelledby="flik-jamforelse" hidden>
+        <div id="vy-jamforelse"></div>
+      </div>
+      <!-- Branscher finns bara för 15–74 år; åldersvalet döljs där -->
+      <div role="tabpanel" id="panel-branscher"
+        aria-labelledby="flik-branscher" data-utan-alder hidden>
+        <div id="vy-branscher"></div>
+      </div>
+      <!-- Om statistiken använder inte urvalet; det döljs där -->
+      <div role="tabpanel" id="panel-om" aria-labelledby="flik-om"
+        data-utan-urval hidden>
+        <div id="vy-om"></div>
+      </div>
     </main>
   </body>
 </html>

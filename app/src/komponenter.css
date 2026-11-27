@@ -1,0 +1,205 @@
+/* Robins designsystem – komponentstilar.
+   Läses efter tokens.css. Alla värden kommer från tokens; inga hårdkodade färger.
+   Tema väljs med data-theme="light" | "dark" på <html>. */
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+* { box-sizing: border-box; }
+/* Webbläsarens egna kontroller (rullistor, rullningslister) följer temat */
+:root, [data-theme="light"] { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; }
+
+/* ---------- Sida och sidhuvud ---------- */
+.ds-sida {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-6);
+}
+.ds-sidhuvud { margin: 0 0 var(--space-12); }
+.ds-sidhuvud h1 {
+  font-size: 44px; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em;
+  margin: 0 0 var(--space-3);
+}
+.ds-ingress { font-size: 18px; line-height: 1.5; color: var(--ink-muted); margin: 0; max-width: 60ch; }
+
+/* ---------- Kort ---------- */
+.ds-kort {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-8);
+}
+.ds-kort + .ds-kort { margin-top: var(--space-6); }
+.ds-steg { font-size: 12px; font-weight: 700; color: var(--ink-muted); margin: 0 0 var(--space-2); }
+.ds-kort h2 { font-size: 22px; line-height: 1.3; font-weight: 600; margin: 0 0 var(--space-2); }
+.ds-kort p { margin: 0; max-width: 65ch; color: var(--ink-muted); }
+
+/* ---------- Notis ---------- */
+.ds-notis {
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px;
+  background: var(--accent-soft);
+  color: var(--info-ink);
+}
+.ds-notis--klar { background: var(--success-bg); color: var(--success-ink); }
+.ds-notis--fel  { background: var(--error-bg);   color: var(--error-ink); }
+.ds-notis strong { font-weight: 700; }
+
+/* ---------- Knappar ---------- */
+.ds-knapp {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font: 600 14px/1 var(--font-sans);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+.ds-knapp:hover { background: var(--surface-2); }
+.ds-knapp:focus-visible,
+.ds-segment button:focus-visible,
+.ds-falt select:focus-visible,
+.ds-utfallbar summary:focus-visible,
+.ds-filzon:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ds-knapp--primar { background: var(--accent); border-color: var(--accent); color: var(--ink-on-accent); }
+.ds-knapp--primar:hover { background: var(--accent); filter: brightness(1.08); }
+.ds-knapp svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+.ds-knappgrupp { display: inline-flex; }
+.ds-knappgrupp .ds-knapp { border-radius: 0; }
+.ds-knappgrupp .ds-knapp + .ds-knapp { margin-left: -1px; }
+.ds-knappgrupp .ds-knapp:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+.ds-knappgrupp .ds-knapp:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+
+/* ---------- Urval: segment och rullista ---------- */
+.ds-urval { display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-6); align-items: flex-end; }
+.ds-falt { display: flex; flex-direction: column; gap: var(--space-1); font-size: 13px; font-weight: 700; }
+.ds-falt select {
+  font: 400 15px/1.3 var(--font-sans);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  min-width: 180px;
+}
+.ds-segment {
+  display: inline-flex; gap: 2px;
+  padding: 2px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.ds-segment button {
+  font: 400 14px/1 var(--font-sans);
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+.ds-segment button[aria-pressed="true"] {
+  background: var(--segment-on);
+  box-shadow: var(--shadow-pop);
+  font-weight: 700;
+}
+[data-theme="dark"] .ds-segment button[aria-pressed="true"] { box-shadow: none; }
+
+/* ---------- Nyckeltal ---------- */
+.ds-nyckeltal { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-4); }
+.ds-kpi {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+}
+.ds-kpi h3 { font-size: 13px; font-weight: 700; color: var(--ink-muted); margin: 0 0 var(--space-2); }
+.ds-kpi-varde {
+  font-size: 40px; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums; margin: 0;
+}
+.ds-forandring { font-size: 13px; color: var(--ink-muted); margin: var(--space-2) 0 0; font-variant-numeric: tabular-nums; }
+.ds-forandring b { color: var(--ink); font-weight: 700; }
+
+/* ---------- Diagram ---------- */
+.ds-diagram {
+  margin: 0;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6) var(--space-6) var(--space-2);
+}
+.ds-diagram-huvud { display: flex; justify-content: space-between; gap: var(--space-4); align-items: flex-start; }
+.ds-diagram h3 { font-size: 22px; line-height: 1.25; font-weight: 800; margin: 0 0 var(--space-1); }
+.ds-diagram-urval { font-size: 13px; font-weight: 700; margin: 0; }
+.ds-diagram-meta { font-size: 13px; color: var(--ink-muted); margin: var(--space-3) 0 0; }
+.ds-legend { display: flex; gap: var(--space-6); font-size: 13px; color: var(--ink-muted); margin: var(--space-4) 0 0; }
+.ds-legend span { display: inline-flex; align-items: center; gap: var(--space-2); }
+.ds-legend svg { width: 28px; height: 4px; overflow: visible; }
+.ds-legend line { stroke: var(--data-1); stroke-width: 2.5; }
+.ds-diagram svg.ds-plot { width: 100%; height: auto; display: block; margin-top: var(--space-2); }
+.ds-plot text { font-family: var(--font-sans); font-size: 12px; fill: var(--ink-muted); }
+.ds-plot .grid line { stroke: var(--chart-grid); stroke-width: 1; }
+.ds-plot .nollinje { stroke: var(--line-strong); }
+.ds-plot .serie { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.ds-plot .prognos, .ds-legend .prognos { stroke-dasharray: 5 4; }
+.ds-plot .referens { stroke: var(--chart-ref); stroke-dasharray: 2 3; }
+.ds-plot .referens-text { fill: var(--ink); font-size: 11px; font-weight: 700; }
+.ds-plot .etikett { fill: var(--ink); font-size: 12px; }
+.ds-plot .s1 { stroke: var(--data-1); fill: var(--data-1); }
+.ds-plot .s2 { stroke: var(--data-2); fill: var(--data-2); }
+.ds-plot .s3 { stroke: var(--data-3); fill: var(--data-3); }
+.ds-plot .s4 { stroke: var(--data-4); fill: var(--data-4); }
+.ds-plot .s5 { stroke: var(--data-5); fill: var(--data-5); }
+.ds-plot .s6 { stroke: var(--data-6); fill: var(--data-6); }
+.ds-plot .s7 { stroke: var(--data-7); fill: var(--data-7); }
+.ds-plot path.serie.s1, .ds-plot path.serie.s2, .ds-plot path.serie.s3,
+.ds-plot path.serie.s4, .ds-plot path.serie.s5, .ds-plot path.serie.s6,
+.ds-plot path.serie.s7 { fill: none; }
+.ds-kallrad { font-size: 13px; color: var(--ink-muted); margin: var(--space-2) 0 var(--space-4); }
+
+.ds-tips {
+  position: absolute; pointer-events: none;
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-pop);
+  padding: 8px 12px; font-size: 13px; font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Utfällbar ---------- */
+.ds-utfallbar { border-top: 1px solid var(--line); }
+.ds-utfallbar summary { font-size: 14px; font-weight: 700; padding: var(--space-3) 0; cursor: pointer; }
+.ds-utfallbar[open] summary { padding-bottom: var(--space-2); }
+.ds-utfallbar > div { padding: 0 0 var(--space-4); }
+
+/* ---------- Tabell ---------- */
+.ds-tabell { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+.ds-tabell th, .ds-tabell td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+.ds-tabell thead th { font-size: 13px; font-weight: 700; color: var(--ink-muted); border-bottom: 1px solid var(--line-strong); }
+.ds-tabell .tal { text-align: right; padding-right: 0; padding-left: 12px; }
+.ds-tabell .markerad td { font-weight: 700; }
+
+/* ---------- Filval ---------- */
+.ds-filzon {
+  display: block;
+  margin-top: var(--space-6);
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  cursor: pointer;
+}
+.ds-filzon:hover, .ds-filzon.aktiv { border-color: var(--accent); }
+.ds-filzon strong { font-size: 15px; font-weight: 700; }
+.ds-filzon span { font-size: 15px; color: var(--ink-muted); }
+.ds-filzon small { display: block; margin-top: var(--space-1); font-size: 12px; color: var(--ink-muted); }

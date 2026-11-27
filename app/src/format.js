@@ -34,5 +34,17 @@ export function formatProcent(varde, decimaler = 1) {
   return `${formatTal(varde, decimaler)}${MELLANSLAG}%`;
 }
 
+// Förändring med tecken: 0.2 -> "+0,2", -1.25 -> "−1,3" (en decimal).
+// enhet läggs efter talet, t.ex. "procentenheter" eller "%".
+export function formatForandring(varde, enhet = "", decimaler = 1) {
+  if (varde === null || varde === undefined || Number.isNaN(varde)) {
+    return "–";
+  }
+  const tal = varde === 0
+    ? formatTal(0, decimaler)
+    : svenskLocale.format(`+,.${decimaler}f`)(varde);
+  return enhet ? `${tal}${MELLANSLAG}${enhet}` : tal;
+}
+
 // Kompakt axelformat för stora tal: 613276 -> "613 276"
 export const axelTal = svenskLocale.format(",.0f");
