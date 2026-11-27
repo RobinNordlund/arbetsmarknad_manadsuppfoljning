@@ -1,119 +1,99 @@
-# mall-analysprojekt
+# Arbetsmarknad – månadsuppföljning
 
-Mallrepo för analysprojekt på Analysenheten, Stadsledningskontoret,
-Göteborgs Stad. Ett nytt projekt startar härifrån och får samma
-struktur, validering och grafiska profil.
+Webbapp för löpande uppföljning av arbetsmarknaden i Göteborg jämfört
+med Stockholm, Malmö, SKR:s 23 större städer och riket. Internt bruk,
+Analysenheten, Stadsledningskontoret, Göteborgs Stad.
 
-## Det här är en mall, inte ett projekt
+Källa: SCB, Befolkningens arbetsmarknadsstatus (BAS), preliminär
+statistik baserad på månatliga uppgifter (tabellerna ArbStatusM,
+ArbStatFAT12 och ArbStDoNMNN), från januari 2020.
 
-Mallen ska göra oss lite mer effektiva, inte bestämma allt. Den ger en
-gemensam struktur, validering och grafisk profil. Resten väljer varje
-projekt själv. Exempelskripten och exempeldatan (folkmängd per
-primärområde) finns bara för att visa hur delarna hänger ihop.
+## Innehåll
 
-## Skapa ett nytt projekt
+Appen har fem flikar:
 
-1. Gå till mallen på GitHub och klicka **Use this template > Create a
-   new repository**. Välj ägare, organisationen
-   `goteborg-statistik-och-analys` eller ditt eget konto, och om repot
-   ska vara publikt eller privat. GitHub Pages fungerar bara i publika
-   repon på organisationens gratisplan.
-2. Klona det nya repot och öppna mappen i VS Code eller RStudio.
-3. Gör följande innan analysen börjar:
-   - **Välj app eller rapport.** Behåll `app/` eller `rapport/` och ta
-     bort den andra, tillsammans med dess workflow i
-     `.github/workflows/` (`publicera-app.yml` eller
-     `publicera-rapport.yml`).
-   - **Ta bort eller ersätt exempelskripten och exempeldatan.** Skript
-     märkta `EXEMPEL` i `R/` och JSON-filerna i `app/data/` eller
-     `rapport/data/` hör till exemplet. Behåll strukturen och
-     valideringen, inte innehållet.
-   - **Fyll i `CLAUDE.md`** (syfte, data, mått och definitioner).
-   - **Lägg in planen i `plan.md`** när den är framtagen i chatten. Till
-     dess ligger mallens tomma plan kvar.
-   - **Ställ in förväntade värden** överst i `R/98_validera.R`.
+| Flik | Visar |
+|------|-------|
+| Översikt | Senaste månaden för Göteborg, jämförelse med Stockholm, Malmö och riket, befolkningen efter status |
+| Utveckling över tid | Ett mått månad för månad; Göteborg och upp till tre regioner till |
+| Jämförelse mellan kommuner | Andelar för de 26 kommunerna, Göteborg markerad, riket som referens |
+| Branscher | Sysselsatta per bransch i Göteborg efter arbetsställe och bostad |
+| Om statistiken | Källa, definitioner och förbehåll |
 
-## Det här behövs på datorn
-
-| Verktyg | Till | Kommentar |
-|---------|------|-----------|
-| R med tidyverse, here, pxweb, sf, jsonlite | All databearbetning | |
-| VS Code med tillägget Live Server | Granska webbappen | Ingen Node.js behövs |
-| Quarto | Rapporten | Följer med RStudio |
+Ålder (20–64 eller 65–74 år), kön och födelseregion väljs gemensamt
+för flikarna. Mått, definitioner och JSON-format beskrivs i
+`CLAUDE.md`; planen och besluten finns i `plan.md`.
 
 ## Köra R-skripten
 
 Kör från projektets rotmapp, i nummerordning:
 
 ```
-Rscript R/01_hamta_data.R      # hämtar data till data/raw/
+Rscript R/01_hamta_data.R      # hämtar från SCB till data/raw/
 Rscript R/10_bearbeta.R        # bearbetar till data/processed/
 Rscript R/98_validera.R        # kontrollerar, stoppar vid fel
-Rscript R/99_exportera_json.R  # validerar och skriver JSON
+Rscript R/99_exportera_json.R  # validerar och skriver JSON till app/data/
 ```
 
-`99_exportera_json.R` kör alltid valideringen först och exporterar
-ingenting om den inte går igenom.
+Regioner, tabelladresser, källrad och etiketter ligger i
+`R/00_installningar.R`. `99_exportera_json.R` kör alltid valideringen
+först och exporterar ingenting om den inte går igenom.
 
-**Kartor:** geometrierna för stadsområden, mellanområden och
-primärområden ligger färdiga i `geo/` (GeoJSON, WGS84). Bara den som
-ska uppdatera dem behöver köra `R/05_geometrier.R`, som läser stadens
-shp-filer i `data/raw/geo/`. Shp-filerna ligger inte i repot.
+Paket: tidyverse, here, pxweb, jsonlite (och httpuv för att granska
+appen lokalt).
 
 ## Granska lokalt
 
-- **Webbapp:** högerklicka på `app/index.html` i VS Code och välj
-  **Open with Live Server**. Filen går inte att öppna direkt från
-  disken, eftersom webbläsaren då stoppar JavaScript-modulerna.
-- **Rapport:** kör `quarto preview rapport` i terminalen.
+Appen är vanlig JavaScript och d3 utan byggsteg. Den måste visas via
+en webbserver, eftersom webbläsaren stoppar JavaScript-moduler som
+öppnas direkt från disken. Antingen:
+
+- högerklicka på `app/index.html` i VS Code och välj **Open with Live
+  Server**, eller
+- kör `Rscript -e "httpuv::runStaticServer('app', port = 8765)"` och
+  öppna http://localhost:8765.
+
+## Utseende
+
+Appen följer Robins designsystem (ljust och mörkt tema, mörkt är
+förval) och Göteborgs Stads grafiska profil. `app/src/tokens.css` och
+`app/src/komponenter.css` kommer ordagrant från designsystemet och
+ändras inte här; projektets egna stilar ligger i `app/src/styles.css`.
+Färger sätts aldrig direkt i koden, bara via variablerna och
+klasserna i designsystemet.
 
 ## Publicera
 
-Ingenting publiceras automatiskt. Du bestämmer när appen eller
-rapporten är klar att publiceras.
-
-1. En gång per projekt: på GitHub, gå till **Settings > Pages** och
-   välj **Source: GitHub Actions**. Organisationen har GitHubs
-   gratisplan, så Pages fungerar bara om projektets repo är **publikt**.
-2. Exportera med `R/99_exportera_json.R`, committa JSON-filerna och
-   pusha till `main`.
-3. Starta publiceringen: fliken **Actions > Publicera app** (eller
-   **Publicera rapport**) **> Run workflow**. Adressen syns under
-   **Settings > Pages** när körningen är klar. Kör den igen varje gång
-   en ny version ska ut.
-
-R körs inte på GitHub. Allt räknas och kontrolleras lokalt; GitHub
-publicerar bara de färdiga filerna.
+Appen publiceras på GitHub Pages med workflowet
+`.github/workflows/publicera-app.yml`. Under utvecklingen startas det
+bara manuellt: **Actions > Publicera app > Run workflow**. När appen
+är godkänd ska en schemalagd körning varje vardag hämta, bearbeta,
+validera, exportera och publicera när SCB har en ny månad. Den
+körningen ändrar bara data, aldrig appens kod, och publicerar inget om
+valideringen stoppar.
 
 ## Struktur
 
 ```
-R/                  Numrerade R-skript (hämta, bearbeta, validera, exportera)
-data/raw/           Rådata – committas aldrig
-data/processed/     Bearbetade data – committas aldrig
-output/             Mellanresultat – committas inte
-geo/                Geometrier (GeoJSON, WGS84) för kartor
-app/                Webbapp: JavaScript + d3, utan byggsteg
-  src/theme.js      Färger och typsnitt enligt grafiska profilen
-  src/format.js     Svensk talformatering
-  src/components/   Källrad och diagram (linje, stapel, karta)
-  data/             JSON från R
-rapport/            Quarto-rapport med OJS/d3-diagram
-  theme.js          Samma färger som appen
-  data/             JSON från R
-.github/workflows/  Publicering till GitHub Pages
+R/                    Numrerade R-skript (inställningar, hämta,
+                      bearbeta, validera, exportera)
+data/raw/             Rådata – committas aldrig
+data/processed/       Bearbetade data – committas aldrig
+app/                  Webbapp: JavaScript + d3, utan byggsteg
+  index.html          Sidan med flikarna
+  src/main.js         Urval, flikar, tema och inläsning av data
+  src/vyer/           En fil per flik
+  src/components/     Källrad och diagram (linje, stapel)
+  src/format.js       Svensk talformatering
+  src/tokens.css      Designsystemets variabler (ändras inte här)
+  src/komponenter.css Designsystemets komponenter (ändras inte här)
+  src/styles.css      Projektets egna stilar
+  data/               JSON från R
+.github/workflows/    Publicering till GitHub Pages
 ```
-
-## Diagram
-
-Utgå gärna från komponenterna i `app/src/components/charts/`. Egna
-diagram går bra, men färger och typsnitt hämtas alltid från
-`theme.js`. Följ Göteborgs Stads grafiska profil och ha en källrad
-under varje diagram och tabell.
 
 ## Data och sekretess
 
-`data/raw/`, `data/processed/` och `output/` ignoreras av git. Endast
-färdiga, kontrollerade JSON-filer för webbappen eller rapporten får
-committas. Data från MONA committas aldrig, inte heller aggregerade
-tabeller före röjandekontroll.
+Statistiken är SCB:s publicerade och skyddade tabeller; ingen data
+från MONA används. `data/raw/` och `data/processed/` ignoreras av git.
+Endast de färdiga, validerade JSON-filerna i `app/data/` committas.

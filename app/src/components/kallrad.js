@@ -7,7 +7,7 @@ export function skapaKallrad(text) {
     return document.createDocumentFragment();
   }
   const p = document.createElement("p");
-  p.className = "kallrad";
+  p.className = "ds-kallrad";
   p.textContent = text;
   return p;
 }
